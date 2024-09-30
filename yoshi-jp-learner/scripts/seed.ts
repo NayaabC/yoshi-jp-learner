@@ -87,6 +87,7 @@ const main = async () => {
             }
         ]);
 
+        // Unit 1 Lesson 1 - Hiragana basics
         await db.insert(schema.challenges).values([
             {
                 id: 1,
@@ -94,12 +95,25 @@ const main = async () => {
                 type: "SELECT",
                 order: 1,
                 question: 'Which one of these characters represents "a"',
+            },
+            {
+                id: 2,
+                lessonId: 1,
+                type: "ASSIST",
+                order: 2,
+                question: '"a"',
+            },
+            {
+                id: 3,
+                lessonId: 1,
+                type: "SELECT",
+                order: 3,
+                question: 'Which one of these characters represent "o"',
             }
         ]);
 
         await db.insert(schema.challengeOptions).values([
             {
-                id: 1,
                 challengeId: 1,
                 imageSrc: '/a.svg',
                 correct: true,
@@ -107,7 +121,6 @@ const main = async () => {
                 audioSrc: '/a.mp3',
             },
             {
-                id: 2,
                 challengeId: 1,
                 imageSrc: '/o.svg',
                 correct: false,
@@ -115,14 +128,77 @@ const main = async () => {
                 audioSrc: '/o.mp3',
             },
             {
-                id: 3,
                 challengeId: 1,
                 imageSrc: '/e.svg',
                 correct: false,
                 text: 'え',
                 audioSrc: '/e.mp3',
             },
+            {
+                challengeId: 2,
+                correct: true,
+                text: 'あ',
+                audioSrc: '/a.mp3',
+            },
+            {
+                challengeId: 2,
+                correct: false,
+                text: 'お',
+                audioSrc: '/o.mp3',
+            },
+            {
+                challengeId: 2,
+                correct: false,
+                text: 'え',
+                audioSrc: '/e.mp3',
+            },
+            {
+                challengeId: 3,
+                imageSrc: '/a.svg',
+                correct: false,
+                text: 'あ',
+                audioSrc: '/a.mp3',
+            },
+            {
+                challengeId: 3,
+                imageSrc: '/o.svg',
+                correct: true,
+                text: 'お',
+                audioSrc: '/o.mp3',
+            },
+            {
+                challengeId: 3,
+                imageSrc: '/e.svg',
+                correct: false,
+                text: 'え',
+                audioSrc: '/e.mp3',
+            },
         ])
+
+        // Hiragana with diactrics
+        await db.insert(schema.challenges).values([
+            {
+                id: 4,
+                lessonId: 2,
+                type: "SELECT",
+                order: 1,
+                question: 'Which one of these characters represents "a"',
+            },
+            {
+                id: 5,
+                lessonId: 2,
+                type: "ASSIST",
+                order: 2,
+                question: '"a"',
+            },
+            {
+                id: 6,
+                lessonId: 2,
+                type: "SELECT",
+                order: 3,
+                question: 'Which one of these characters represent "o"',
+            }
+        ]);
 
         console.log("Seeding finished");
     } catch (error) {
