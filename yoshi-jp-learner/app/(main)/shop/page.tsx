@@ -1,23 +1,30 @@
 import { FeedWrapper } from "@/components/feed-wrapper";
 import { StickyWrapper } from "@/components/sticky-wrapper";
 import { UserProgress } from "@/components/user-progress";
-import { getUserProgress } from "@/db/queries";
+import { getUserProgress, getUserSubscription } from "@/db/queries";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import { Items } from "./items";
+import { Promo } from "@/components/promo";
+import { Quests } from "@/components/quests";
 
 const ShopPage = async () => {
     const userProgressData = getUserProgress();
+    const userSubscriptionData = getUserSubscription();
 
     const [
-        userProgress
+        userProgress,
+        userSubscription
     ] = await Promise.all([
         userProgressData,
+        userSubscriptionData,
     ]);
 
     if (!userProgress || !userProgress.activeTopic) {
         redirect("/topics");
     }
+
+    const isSubbed = !!userSubscription?.isActive;
 
     return (
         <div className="flex flex-row-reverse gap-[48px] px-6">
@@ -26,8 +33,12 @@ const ShopPage = async () => {
                     activeTopic={userProgress.activeTopic}
                     hearts={userProgress.hearts}
                     points={userProgress.points}
-                    hasActiveSubscription={false}
+                    hasActiveSubscription={isSubbed}
                 />
+                {!isSubbed && (
+                    <Promo/>
+                )}
+                <Quests points={userProgress.points} />
             </StickyWrapper>
             <FeedWrapper>
                 <div className="w-full flex flex-col items-center">
@@ -46,7 +57,7 @@ const ShopPage = async () => {
                     <Items 
                         hearts={userProgress.hearts}
                         points={userProgress.points}
-                        hasActiveSubscription={false}   //TODO: add subscription
+                        hasActiveSubscription={isSubbed}
                     />
                 </div>
             </FeedWrapper>

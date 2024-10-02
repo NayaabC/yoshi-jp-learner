@@ -41,7 +41,7 @@ export const Sidebar = ({ className }: Props) => {
                 />
                 <SidebarItem 
                     label="Profile" 
-                    href="/profile"
+                    href="" // TODO: put href when developing or completing Profile page
                     iconSrc="/profile-simple.svg"
                 />
                 <SidebarItem 

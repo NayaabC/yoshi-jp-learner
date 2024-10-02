@@ -32,7 +32,6 @@ export const Challenge = ({
                     text={option.text}
                     imageSrc={option.imageSrc}
                     shortcut={`${i+1}`}
-                    //TODO: remove hardcoded true
                     selected={selectedOption === option.id}
                     onClick={() => onSelect(option.id)}
                     status={status}
