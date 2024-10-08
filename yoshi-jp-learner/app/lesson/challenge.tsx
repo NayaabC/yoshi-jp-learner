@@ -19,6 +19,9 @@ export const Challenge = ({
     disabled,
     type
 }: Props) => {
+
+
+
     return (
         <div className={cn(
             "grid gap-2",

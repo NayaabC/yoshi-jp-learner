@@ -54,6 +54,35 @@ const kanaTranslations = [
 
 const kanaBasics = [hiragana, katakana];
 
+let kana = [];
+
+for (let i = 0; i < kanaBasics.length; i++) {
+    for (let j = 0; j < kanaBasics[i].length; j++) {
+        for (let k = 0; k < kanaBasics[i][j].length; k++) {
+            kana.push(kanaBasics[i][j][k]);
+        }
+    }
+}
+
+let kanaTranslationsAll = [];
+
+for (let i = 0; i < kanaTranslations.length; i++) {
+    for(let j = 0; j < kanaTranslations[i].length; j++) {
+        kanaTranslationsAll.push(kanaTranslations[i][j]);
+    }
+}
+
+// console.log(res);
+
+                    
+function shuffleOptions<T>(array: T[]): T[] {
+    for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
 
 const main = async () => {
     try {
@@ -117,7 +146,9 @@ const main = async () => {
         let countLessons: number = 0;
         let countChallenges: number = 0;
         for(let i = 0; i < kanaBasics.length; i++){
+            console.log(`Seeding Lessons for [${(i == 0) ? "Hiragana" : "Katakana"}]\n`);
             for(let j = 0; j < kanaBasics[i].length; j++) {
+                console.log(`\tSeeding Lessons and Options for [${kanaBasics[i][j]}]\n`);
                 let text : string = "";
                 switch(j) {
                     case 0:
@@ -179,6 +210,51 @@ const main = async () => {
                             question: questionDesc
                         }
                     ]);
+
+                    let correctOption: string = (lessonType === "SELECT")
+                                                ? kanaBasics[i][j][k]
+                                                : kanaTranslations[j][k];
+                    let randomOptions: string[] = [correctOption];
+                    let ind = Math.floor(Math.random() * kana.length);
+
+                    // Generate random incorrect options
+                    while (randomOptions.length < 4) {
+                        while (
+                            (lessonType === "SELECT" && randomOptions.indexOf(kana[ind]) > -1)
+                            || (lessonType === "ASSIST" && randomOptions.indexOf(kanaTranslationsAll[ind]) > -1)
+                        ){
+                            ind = (lessonType === "SELECT")
+                                ? Math.floor(Math.random() * kana.length)
+                                : Math.floor(Math.random() * kanaTranslationsAll.length);
+                        }
+                        if (lessonType === "SELECT")
+                            randomOptions.push(kana[ind]);
+                        else
+                            randomOptions.push(kanaTranslationsAll[ind]);
+                    }
+
+                    // Shuffle Options around to avoid pattern recognition of correct option positions
+                    randomOptions = shuffleOptions(randomOptions);
+                    randomOptions = shuffleOptions(randomOptions);
+                    randomOptions = shuffleOptions(randomOptions);
+
+                    while (randomOptions.length > 0) {
+                        let optionText = randomOptions.pop();
+                        let isCorrect = (optionText === correctOption) ? true : false;
+
+                        if (!optionText || optionText.length == 0) {
+                            optionText = (lessonType === "SELECT") ? "あ" : "a";
+                        }
+
+                        await db.insert(schema.challengeOptions).values([
+                            {
+                                challengeId: countChallenges + 1,
+                                correct: isCorrect,
+                                text: optionText,
+                            }
+                        ]);
+                    }
+
                     countChallenges++;
                 }
                 countLessons++;
@@ -211,68 +287,68 @@ const main = async () => {
         // ]);
 
         
-        await db.insert(schema.challengeOptions).values([
-            {
-                challengeId: 1,
-                imageSrc: '/a.svg',
-                correct: true,
-                text: 'あ',
-                audioSrc: '/a.mp3',
-            },
-            {
-                challengeId: 1,
-                imageSrc: '/o.svg',
-                correct: false,
-                text: 'お',
-                audioSrc: '/o.mp3',
-            },
-            {
-                challengeId: 1,
-                imageSrc: '/e.svg',
-                correct: false,
-                text: 'え',
-                audioSrc: '/e.mp3',
-            },
-            {
-                challengeId: 2,
-                correct: true,
-                text: 'あ',
-                audioSrc: '/a.mp3',
-            },
-            {
-                challengeId: 2,
-                correct: false,
-                text: 'お',
-                audioSrc: '/o.mp3',
-            },
-            {
-                challengeId: 2,
-                correct: false,
-                text: 'え',
-                audioSrc: '/e.mp3',
-            },
-            {
-                challengeId: 3,
-                imageSrc: '/a.svg',
-                correct: false,
-                text: 'あ',
-                audioSrc: '/a.mp3',
-            },
-            {
-                challengeId: 3,
-                imageSrc: '/o.svg',
-                correct: true,
-                text: 'お',
-                audioSrc: '/o.mp3',
-            },
-            {
-                challengeId: 3,
-                imageSrc: '/e.svg',
-                correct: false,
-                text: 'え',
-                audioSrc: '/e.mp3',
-            },
-        ]);
+        // await db.insert(schema.challengeOptions).values([
+        //     {
+        //         challengeId: 1,
+        //         imageSrc: '/a.svg',
+        //         correct: true,
+        //         text: 'あ',
+        //         audioSrc: '/a.mp3',
+        //     },
+        //     {
+        //         challengeId: 1,
+        //         imageSrc: '/o.svg',
+        //         correct: false,
+        //         text: 'お',
+        //         audioSrc: '/o.mp3',
+        //     },
+        //     {
+        //         challengeId: 1,
+        //         imageSrc: '/e.svg',
+        //         correct: false,
+        //         text: 'え',
+        //         audioSrc: '/e.mp3',
+        //     },
+        //     {
+        //         challengeId: 2,
+        //         correct: true,
+        //         text: 'あ',
+        //         audioSrc: '/a.mp3',
+        //     },
+        //     {
+        //         challengeId: 2,
+        //         correct: false,
+        //         text: 'お',
+        //         audioSrc: '/o.mp3',
+        //     },
+        //     {
+        //         challengeId: 2,
+        //         correct: false,
+        //         text: 'え',
+        //         audioSrc: '/e.mp3',
+        //     },
+        //     {
+        //         challengeId: 3,
+        //         imageSrc: '/a.svg',
+        //         correct: false,
+        //         text: 'あ',
+        //         audioSrc: '/a.mp3',
+        //     },
+        //     {
+        //         challengeId: 3,
+        //         imageSrc: '/o.svg',
+        //         correct: true,
+        //         text: 'お',
+        //         audioSrc: '/o.mp3',
+        //     },
+        //     {
+        //         challengeId: 3,
+        //         imageSrc: '/e.svg',
+        //         correct: false,
+        //         text: 'え',
+        //         audioSrc: '/e.mp3',
+        //     },
+        // ]);
 
         // Hiragana with diactrics
         // await db.insert(schema.challenges).values([

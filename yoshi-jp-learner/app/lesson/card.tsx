@@ -69,13 +69,24 @@ export const Card = ({
               viewBox="0 -10 75 75"
               className="w-100 h-100"
             >
-              <text
-                x="10"
-                y="50"
-                className="text-6xl text-black"
-              >
-                {text}
-              </text>
+              {type === "ASSIST" && (
+                <text
+                  x="30"
+                  y="5"
+                  className="text-xs text-black"
+                >
+                  {text}
+                </text>
+              )}
+              {type === "SELECT" && (
+                <text
+                  x="10"
+                  y="50"
+                  className="text-6xl text-black"
+                >
+                  {text}
+                </text>
+              )}
             </svg>
           </div>
         )}
