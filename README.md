@@ -4,7 +4,7 @@ Web-application for helping users learn Japanese.
 Right now, only Hiragana and Katakana lessons are available.
 -   Does not include Diagraphs or Diacritics
 
-You can try the web-app here: https://vercel.live/link/yoshi-jp-learner-avoy.vercel.app?via=deployment-domains-list&p=1
+You can try the web-app here: https://yoshi-jp-learner-avoy.vercel.app/
 *** Upgrading to a pro subscription is disabled by default, it was mainly added to see how the Stripe API integration works ***
 
 
