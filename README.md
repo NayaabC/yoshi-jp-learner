@@ -34,5 +34,5 @@ You can try the web-app here: https://yoshi-jp-learner-avoy.vercel.app/
 - Authorization using Clerk
 - Sound Effects
 
-## Note: The goal of this projest was to develop my React and Typescript/JS skills while also being able to review the basics of the Japanese language.
+## Note: The goal of this project was to develop my React and Typescript/JS skills while also being able to review the basics of the Japanese language.
 - I had a ton of fun and I am looking forward to making other projects! Perhaps a future project can be implemented in this one; an idea that I had that can be useful is the usage of a Machine Learning model to help the user review more optimally.
